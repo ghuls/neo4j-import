@@ -56,7 +56,7 @@ public class CsvImporter implements BatchInserterImporter
         try
         {
             importNodes( target, batchInserter );
-            importRels( target );
+            importRels( target, batchInserter );
         }
         catch ( Exception e )
         {
@@ -101,7 +101,7 @@ public class CsvImporter implements BatchInserterImporter
                 if ( properties.size() > 0 )
                 {
                     nodePropertyKeys = parsePropertyKeys( properties );
-                    indices = configureIndices( nodePropertyKeys, indexProvider );
+                    indices = configureIndices( nodePropertyKeys, indexProvider ,false);
                 }
                 continue;
             }
@@ -126,7 +126,7 @@ public class CsvImporter implements BatchInserterImporter
         }
     }
 
-    private Collection<IndexEntry> configureIndices( List<PropertyKey> nodePropertyKeys, LuceneBatchInserterIndexProvider indexProvider )
+    private Collection<IndexEntry> configureIndices( List<PropertyKey> nodePropertyKeys, LuceneBatchInserterIndexProvider indexProvider , boolean isRel)
     {
         Map<String, IndexEntry> indices = new HashMap<String, IndexEntry>();
         for ( PropertyKey propertyKey : nodePropertyKeys )
@@ -136,7 +136,7 @@ public class CsvImporter implements BatchInserterImporter
                 IndexEntry indexEntry = indices.get( propertyKey.getIndex() );
                 if (indexEntry == null)
                 {
-                    indexEntry = new IndexEntry( indexProvider.nodeIndex( propertyKey.getIndex(), MapUtil.stringMap( "type", "exact" ) ) );
+                    indexEntry = (!isRel) ? new IndexEntry( indexProvider.nodeIndex( propertyKey.getIndex(), MapUtil.stringMap( "type", "exact" ) ) ) : new IndexEntry( indexProvider.relationshipIndex( propertyKey.getIndex(), MapUtil.stringMap( "type", "exact" ) ) );
                     indices.put( propertyKey.getIndex(), indexEntry );
                 }
                 indexEntry.addKey( propertyKey.getName() );
@@ -145,9 +145,10 @@ public class CsvImporter implements BatchInserterImporter
         return indices.values();
     }
 
-    private void importRels( BatchInserter target ) throws FileNotFoundException
+    private void importRels( BatchInserter target, LuceneBatchInserterIndexProvider indexProvider ) throws FileNotFoundException
     {
         List<PropertyKey> relPropertyKeys = null;
+        Collection<IndexEntry> indices = null;
         long counter = 0;
         Scanner nodeScanner = new Scanner( rels );
         while ( nodeScanner.hasNextLine() )
@@ -176,10 +177,13 @@ public class CsvImporter implements BatchInserterImporter
                 if ( properties.size() > 0 )
                 {
                     relPropertyKeys = parsePropertyKeys( properties );
+                    indices = configureIndices( relPropertyKeys, indexProvider , true);
                 }
                 continue;
             }
-            target.createRelationship( from, to, type, getProperties( properties, relPropertyKeys ) );
+            final Map<String, Object> props = getProperties( properties, relPropertyKeys );
+            long id= target.createRelationship( from, to, type, getProperties( properties, relPropertyKeys ) );
+            indexProperties( id, indices, props );
             if ( ++counter % 100000 == 0 ) System.out.println( "Created " + counter + " relationships." );
         }
     }
