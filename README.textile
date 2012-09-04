@@ -1,6 +1,9 @@
 h1. Neo4j Import Tool
 
-handles relationship indexes
+h2. Notes
+
+Bugfix: handles relationship indexes
+Bugfix: Does not throw when an indexed field is null
 
 h2. Building
 
