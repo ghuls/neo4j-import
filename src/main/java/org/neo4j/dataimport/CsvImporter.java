@@ -69,7 +69,7 @@ public class CsvImporter implements BatchInserterImporter {
 		long counter = 0;
 		Scanner nodeScanner = new Scanner(nodes);
 		while (nodeScanner.hasNextLine()) {
-			String[] nodeParts = nodeScanner.nextLine().split(",");
+			String[] nodeParts = nodeScanner.nextLine().split("\t");
 			List<String> properties = Arrays.asList(nodeParts).subList(1, nodeParts.length);
 			long id;
 			try {
@@ -129,7 +129,7 @@ public class CsvImporter implements BatchInserterImporter {
 		long counter = 0;
 		Scanner nodeScanner = new Scanner(rels);
 		while (nodeScanner.hasNextLine()) {
-			String[] relParts = nodeScanner.nextLine().split(",");
+			String[] relParts = nodeScanner.nextLine().split("\t");
 			if (relParts.length < 3) {
 				throw new IllegalStateException("Relationship must have at least <from>,<to>,<type>");
 			}

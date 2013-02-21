@@ -102,7 +102,7 @@ public class CsvImporterTest
     {
         addNode( "1" );
         addNode( "2" );
-        addRel( "1,2,KNOWS" );
+        addRel( "1\t2\tKNOWS" );
 
         writeFiles();
 
@@ -121,8 +121,8 @@ public class CsvImporterTest
     @Test
     public void testNodePropertyImport() throws IOException
     {
-        addNode( "id,name" );
-        addNode( "1,hello" );
+        addNode( "id\tname" );
+        addNode( "1\thello" );
 
         writeFiles();
 
@@ -138,9 +138,9 @@ public class CsvImporterTest
     @Test
     public void testIndexedNodePropertyImport() throws IOException
     {
-        addNode( "id,people|name" );
-        addNode( "1,hello" );
-        addNode( "2,bye" );
+        addNode( "id\tpeople|name" );
+        addNode( "1\thello" );
+        addNode( "2\tbye" );
 
         writeFiles();
 
@@ -156,8 +156,8 @@ public class CsvImporterTest
     @Test
     public void testMultipleIndexedNodePropertyImport() throws IOException
     {
-        addNode( "id,people|firstname,people|lastname,entities|entityid@long" );
-        addNode( "1,Jane,Doe,35" );
+        addNode( "id\tpeople|firstname\tpeople|lastname\tentities|entityid@long" );
+        addNode( "1\tJane\tDoe\t35" );
 
         writeFiles();
 
@@ -178,8 +178,8 @@ public class CsvImporterTest
     {
         addNode( "1" );
         addNode( "2" );
-        addRel( "from,to,type,since@long" );
-        addRel( "1,2,KNOWS,123" );
+        addRel( "from\tto\ttype\tsince@long" );
+        addRel( "1\t2\tKNOWS\t123" );
 
         writeFiles();
 
@@ -197,11 +197,11 @@ public class CsvImporterTest
     public void testPropertyTypes() throws IOException
     {
 
-        addNode( "id,s,ss@String,l@long,i@int,sh@short,b@byte,c@char,f@float,d@double,bo@boolean" );
-        addNode( "1,hello,foo,9999999999999999,888888888,777,66,g,0.2345,0.1234,true" );
+        addNode( "id\ts\tss@String\tl@long\ti@int\tsh@short\tb@byte\tc@char\tf@float\td@double\tbo@boolean" );
+        addNode( "1\thello\tfoo\t9999999999999999\t888888888\t777\t66\tg\t0.2345\t0.1234\ttrue" );
         addNode( "2" );
-        addRel( "from,to,type,s,ss@String,l@long,i@int,sh@short,b@byte,c@char,f@float,d@double,bo@boolean" );
-        addRel( "1,2,KNOWS,hello,foo,9999999999999999,888888888,777,66,g,0.2345,0.1234,true" );
+        addRel( "from\tto\ttype\ts\tss@String\tl@long\ti@int\tsh@short\tb@byte\tc@char\tf@float\td@double\tbo@boolean" );
+        addRel( "1\t2\tKNOWS\thello\tfoo\t9999999999999999\t888888888\t777\t66\tg\t0.2345\t0.1234\ttrue" );
 
         writeFiles();
 
@@ -238,10 +238,10 @@ public class CsvImporterTest
     @Test
     public void testSparseProperties() throws IOException
     {
-        addNode( "id,name,age@long" );
-        addNode( "1,a" );
-        addNode( "2,,25" );
-        addNode( "3,c,26" );
+        addNode( "id\tname\tage@long" );
+        addNode( "1\ta" );
+        addNode( "2\t\t25" );
+        addNode( "3\tc\t26" );
 
         writeFiles();
 
