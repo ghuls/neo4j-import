@@ -1,4 +1,4 @@
-h1. Neo4j Import Tool
+h1. Neo4j Import Tool ( NOTE : COMMA IS CHANGED TO TAB, SO PL USE TAB AS FIELD SEPARATOR )
 
 h2. Notes
 
