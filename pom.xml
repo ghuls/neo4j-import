@@ -10,6 +10,9 @@
 
   <properties>
     <neo4j.version>1.6.1</neo4j.version>
+    <mcp.version>3.1</mcp.version>
+    <mcp.source>1.5</mcp.source>
+    <mcp.target>1.5</mcp.target>
   </properties>
 
   <dependencies>
@@ -53,4 +56,19 @@
     </dependency>
 
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${mcp.version}</version>
+        <configuration>
+          <source>${mcp.source}</source>
+          <target>${mcp.target}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
 </project>
